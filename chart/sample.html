@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample</title>
+
+    <link href="./css/common.css" rel="stylesheet" type="text/css">
+        
+    <script src="./script/Chart.bundle.min.js"></script>
+    <script src="./script/utils.js"></script>
+    <script src="./script/common.js"></script>
+
+
+
+</head>
+<body>
+    <div class="container">
+
+        <!-- 
+            Doughnut Chart    
+            원본: index.html 
+            js: sampleChartLip.js, Chart.bundle.js
+        -->
+        <!-- <div class="chart">
+            <canvas id="chartjs-1" class="chartjs" width="100%" height="100%" style="display: block;"></canvas>
+            <div class="txt">
+                도넛 차트
+            </div>
+        </div> -->
+
+
+
+        <!-- 
+            Doughnut Chart    
+            원본: index.html 
+            js: sampleChartLip.js, Chart.bundle.js
+        -->
+        <div class="chart circle">
+            <canvas id="chartjs-2" class="chartjs" width="100%" height="100%" style="display: block;"></canvas>
+            <!-- <div id="legend" class="legend"></div> -->
+            <div class="txt">
+                도넛 차트<br>데이터 값이 1개인 경우
+            </div>
+        </div>
+
+        <!-- 
+            line Chart    
+            원본: lineChart_v2.html
+            js: Chart.bundle.js, chartPlugin.js, 하단의 코드
+            css: common.css
+        -->
+        
+        <div class="chart line">
+            <canvas id="chartjs-8" width="100%" height="200px"></canvas>
+            <div class="txt">
+                곡선 라인 차트
+            </div>
+        </div>
+        
+    </div>
+
+    
+    <!-- <script>
+        // line chart 스크립트
+        var aLabelData =  ['00시', '02시', '04시', '06시', '08시', '10시', '12시', '14시', '16시', '18시', '20시', '22시', '24시'];
+
+        var aDataSetData = [
+            [ //210602추가
+                30, 60, 70, 80 , 90 , 100 , 20, 50, 40, 100, 150, 200, 210, 220, 230, 170, 150, 130, 120, 100, 90, 50, 40, 100, 150, 200, 210, 220, 230, 170, 150, 130
+            ],
+            [
+                20, 4, 30, 50, 15, 33, 11, 20, 4, 30, 50, 15, 33, 11, 20, 4, 30, 50, 15, 33, 11, 20, 4, 30, 50, 15, 33, 11, 20, 4, 30, 50, 15, 33, 11, 20, 4, 30, 50, 15, 33, 11, 20, 4, 30, 50, 15, 33, 11, 20, 4, 30, 50, 15, 33, 11
+            ]
+        ];
+
+        var iDataSetMin = 0;
+        var iDataSetMax = 200;
+
+
+        COMMON.lineChart.init({
+            id:'#chartjs-5',
+            label: aLabelData,
+            dataSet: aDataSetData,
+            dataSetMin: iDataSetMin,
+            dataSetMax: iDataSetMax,
+        });
+    </script> -->
+
+</body>
+</html>

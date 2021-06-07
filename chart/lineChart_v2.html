@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+
+	<title>Line Chart v2</title>
+	<script src="./script/Chart.bundle.min.js"></script>
+	<!-- <script src="./script/chart_v3.3.2.js"></script> -->
+	<script src="./script/jquery-3.3.1.js"></script>
+	<link href="./css/common.css" rel="stylesheet" type="text/css">
+
+	<style>
+		canvas{
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
+		.chart{
+			width: 400px;
+		}
+		.legend {
+			width:100%;
+			position: relative;
+			top: 10px;
+			right: 0px;
+			/* font-variant: small-caps; */
+		}
+		.txt{
+			padding: 10px;
+			border: 1px solid;
+			margin-top: 25px;
+			margin-bottom: 25px;
+			margin-left: auto;
+			margin-right: auto;
+			text-align: center
+		}
+		.legend li span{
+			display: block;
+		}
+		.chart.bar{
+			width: 500px;
+		}
+	</style>
+</head>
+	<body>
+		<div class="chartContainer" style="width:1000px">
+			<!-- <div class="tab">
+				기간별 데이터 기준 : 기획서 23P 참고
+					<ul class="tabType01">
+						<li><a href="#">1개월</a></li> 기간 : 전일 ~ 전일-30일, 단위: 1일
+						<li><a href="#">3개월</a></li> 기간: 전일 ~ 전일-90일, 단위: 1일
+						<li><a href="#">6개월</a></li> 기간: 전일 ~ 전일-180일, 단위: 1일
+						<li><a href="#">1년</a></li>   기간: 전일 ~ 전일-365일, 단위: 1일
+						<li><a href="#">3년</a></li>   기간: 전일 ~ 전일-1095일, 단위: 월요일 기준
+						<li><a href="#">설정일 이후</a></li>  단위: 월요일 기준
+					</ul>
+			</div> -->
+			<div class="chartWrap" style="height:500px">
+				<canvas id="chartjs-5" width="1000px" height="300px"></canvas>
+				<!-- <canvas id="myChart" width="1000px" height="300px"></canvas> -->
+			</div>
+		</div>
+
+		<script src="./script/chartPlugin.js"></script>
+		<script>
+		//COMMON.lineChart.init(options);
+		//options값
+		//id :  (type:String) /  # + canvasId
+		//label : (type:Array) / label data
+		//dataSet : (type:Array) / dataSet data / [ [종류CS5 Data], [벤치마크 Data] ]
+		//dataSetMin : 데이터 최소값
+		//dataSetMax : 데이터 최대값
+
+		// 샘플
+		// https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=deepplin&logNo=60205047033
+		// https://www.debugcn.com/ko/article/18277752.html
+
+		var aLabelData =  ['00시', '02시', '04시', '06시', '08시', '10시', '12시', '14시', '16시', '18시', '20시', '22시', '24시'];
+
+
+		var aDataSetData = [
+			[ //210602추가
+				30, 60, 70, 80 , 90 , 100 , 20, 50, 40, 100, 150, 200, 210, 220, 230, 170, 150, 130, 120, 100, 90, 50, 40, 100, 150, 200, 210, 220, 230, 170, 150, 130
+			],
+			[
+				20, 4, 30, 50, 15, 33, 11, 20, 4, 30, 50, 15, 33, 11, 20, 4, 30, 50, 15, 33, 11, 20, 4, 30, 50, 15, 33, 11, 20, 4, 30, 50, 15, 33, 11, 20, 4, 30, 50, 15, 33, 11, 20, 4, 30, 50, 15, 33, 11, 20, 4, 30, 50, 15, 33, 11
+			]
+		];
+
+		// var aDataSetData = [
+		// 	{
+		// 		fillColor: "rgba(220,220,220,0.5)",
+		// 		strokeColor: "rgba(220,220,220,1)",
+		// 		pointColor: "rgba(220,220,220,1)",
+		// 		pointStrokeColor: "#FFF",
+		// 		data: [
+		// 			30, 60, 70, 80 , 90 , 100 , 20, 50, 40, 100, 150, 200, 210, 220, 230, 170, 150, 130, 120, 100, 90, 50, 40, 100, 150, 200, 210, 220, 230, 170, 150, 130, 120, 100, 90, 50, 40, 100, 150, 200, 210, 220, 230, 170, 150, 130, 120, 100, 90
+		// 		],
+		// 	},
+		// 	{
+		// 		fillColor: "rgba(220,220,220,0.5)",
+		// 		strokeColor: "rgba(220,220,220,1)",
+		// 		pointColor: "rgba(220,220,220,1)",
+		// 		pointStrokeColor: "#FFF",
+		// 		data: [20, 4, 30, 50, 15, 33, 11]
+		// 	}
+		// ];
+
+		var iDataSetMin = 0;
+		var iDataSetMax = 200;
+
+
+		COMMON.lineChart.init({
+			id:'#chartjs-5',
+			label: aLabelData,
+			dataSet: aDataSetData,
+			dataSetMin: iDataSetMin,
+			dataSetMax: iDataSetMax,
+		});
+
+
+		// //탭 클릭 시 데이터 변경
+		// $('.tabType01 a').on('click', function(){
+		// 		var dataSetData, labelData;
+		// 		var iDataSetMin = -50;
+		// 		var iDataSetMax = 300;
+
+		// 		var dataSetData = [];
+		// 		dataSetData[0] = [];
+		// 		dataSetData[1] = [];
+		// 		var aLabelData =  ['2019.01.01', '2019.01.02', '2019.01.03', '2019.01.04', '2019.01.05', '2019.01.06', '2019.01.07', '2019.01.08', '2019.01.09', '2019.01.10', '2019.01.11', '2019.01.12', '2019.01.13', '2019.01.14', '2019.01.15', '2019.01.16', '2019.01.17', '2019.01.18', '2019.01.19', '2019.01.20', '2019.01.21', '2019.01.22', '2019.01.23', '2019.01.24', '2019.01.25', '2019.01.26', '2019.01.27', '2019.01.28', '2019.01.29', '2019.01.30', '2019.01.31', '2019.02.01', '2019.02.02', '2019.02.03', '2019.02.04', '2019.02.05', '2019.02.06', '2019.02.07', '2019.02.08', '2019.02.09', '2019.02.10', '2019.02.11', '2019.02.12', '2019.02.13', '2019.02.14', '2019.02.15', '2019.02.16', '2019.02.17', '2019.02.18', '2019.02.19', '2019.02.20', '2019.02.21', '2019.02.22', '2019.02.23', '2019.02.24', '2019.02.25', '2019.02.26', '2019.02.27', '2019.02.28', '2019.03.01', '2019.03.02', '2019.03.03', '2019.03.04', '2019.03.05', '2019.03.06', '2019.03.07', '2019.03.08', '2019.03.09', '2019.03.10', '2019.03.11', '2019.03.12', '2019.03.13', '2019.03.14', '2019.03.15', '2019.03.16', '2019.03.17', '2019.03.18', '2019.03.19', '2019.03.20', '2019.03.21', '2019.03.22', '2019.03.23', '2019.03.24', '2019.03.25', '2019.03.26', '2019.03.27', '2019.03.28', '2019.03.29', '2019.03.30', '2019.03.31', '2019.04.01', '2019.04.02', '2019.04.03', '2019.04.04', '2019.04.05', '2019.04.06', '2019.04.07', '2019.04.08', '2019.04.09', '2019.04.10'];
+
+		// 		var ranNum;
+		// 	  for(var i=0 ; i<100; i++){
+		// 	      ranNum = Math.floor(Math.random() * 10) + 1;
+		// 	      dataSetData[0].push(ranNum);
+		// 	  }
+
+		// 		for(var i=0 ; i<100; i++){
+		// 	      ranNum = Math.floor(Math.random() * 10) + 1;
+		// 	      dataSetData[1].push(ranNum);
+		// 	  }
+
+
+		// 		COMMON.lineChart.init({
+		// 			id:'#chartjs-5',
+		// 			label: aLabelData,
+		// 		  	dataSet: dataSetData,
+		// 			dataSetMin: iDataSetMin,
+		// 			dataSetMax: iDataSetMax,
+		// 		});
+		// });
+
+		</script>
+
+	</body>
+</html>

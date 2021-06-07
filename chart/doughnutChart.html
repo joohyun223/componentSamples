@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Doughnut Chart</title>
+    <script src="./script/Chart.bundle.min.js"></script>
+    <script src="./script/jquery-3.3.1.js"></script>
+    <link href="./css/common.css" rel="stylesheet" type="text/css">
+    <style>
+        canvas {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .chart {
+            width: 400px;
+        }
+
+        .legend {
+            width: 100%;
+            position: relative;
+            top: 10px;
+            right: 0px;
+            /* font-variant: small-caps; */
+        }
+
+        .txt {
+            padding: 10px;
+            border: 1px solid;
+            margin-top: 25px;
+            margin-bottom: 25px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center
+        }
+
+        .legend li span {
+            display: block;
+        }
+
+        .chart.bar {
+            width: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="chartWrap">
+        <canvas id="chartjs-3" width="500px" height="260px"></canvas>
+    </div>
+</body>
+<script src="./script/chartPlugin.js"></script>
+<script>
+    //COMMON.pieChart.init(options);
+    //options값
+    //id :  (type:String) /  # + canvasId
+    //dataSet : (type:Array) / dataSet data / [ 1,2,3... ]
+
+    var dataSetData = [75, 25];
+    COMMON.doughnutChart.init({
+        id: '#chartjs-3',
+        dataSet: dataSetData,
+    });
+</script>
+
+
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+      <style>
+          * {
+              -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            }
+    
+            .noselect {
+              -webkit-touch-callout: none;
+              -webkit-user-select: none;
+              -khtml-user-select: none;
+              -moz-user-select: none;
+              -ms-user-select: none;
+              user-select: none;
+            }
+            html,
+            body {
+              height:100%;
+              margin: 0;
+            }
+            body {
+              font-family:sans-serif;
+              font-size:12px;
+              font-weight:normal;
+            }
+    
+            ol,
+            ul {
+              list-style: none;
+              margin:0;
+              padding:0;
+              text-align:center;
+            }
+            li {
+              display: inline-table;
+            }
+    
+            #chart {
+              position:relative;
+              height: 60vh;
+              width: 60vh;
+              top:15%;
+              margin:auto;
+            }
+            #chartjs-legend {
+              position:absolute;
+              width:100%;
+              bottom:10%;
+            }
+            #chartjs-legend li {
+              cursor:pointer;
+              margin: 10px 4px;
+            }
+            #chartjs-legend li span {
+              position:relative;
+              padding: 6px 20px;
+              border-radius:13px;
+              color:white;
+              z-index:2;
+            }
+          </style>
+</head>
+
+<body>
+
+  <div id="chart" class="noselect">
+  <canvas id="myChart" height="100%" width="100%"></canvas>
+  
+</div>
+<div id="chartjs-legend" class="noselect"></div>
+<script src='./script/Chart.bundle.min.js'></script>
+
+<script>
+  var data = {
+  labels: [
+    "Red",
+    "Blue",
+    "Yellow"
+  ],
+  datasets: [{
+    data: [300, 50, 100],
+    backgroundColor: [
+      "#FF6384",
+      "#36A2EB",
+      "#FFCE56"
+    ],
+    hoverBackgroundColor: [
+      "#FF6384",
+      "#36A2EB",
+      "#FFCE56"
+    ],
+    borderWidth: 1
+  }]
+};
+
+var options = {
+  animation: {
+    animateRotate: true,
+    animateScale: true
+  },
+  cutoutPercentage: 85,
+  legend: {
+    display: false
+  },
+  legendCallback: function(chart) {
+    var text = [];
+    text.push('<ul class="' + chart.id + '-legend">');
+    for (var i = 0; i < chart.data.datasets[0].data.length; i++) {
+      text.push('<li onclick="legClick(event)"><span style="background-color:' + chart.data.datasets[0].backgroundColor[i] + '">');
+      if (chart.data.labels[i]) {
+        text.push(chart.data.labels[i]);
+      }
+      text.push('</span></li>');
+    }
+    text.push('<li class="chgbutton"><span style="background-color: #5f9ea0"> Change </span></li> </ul>');
+    return text.join("");
+  },
+  tooltips: {
+    displayColors: true,
+    onClick : function(){
+      
+    },
+    custom: function(tooltip) {
+      //tooltip.x = 0;
+      //tooltip.y = 0;
+    },
+    mode: 'single',
+    callbacks: {
+      label: function(tooltipItem, data) {
+        var label = data.datasets[0].data[tooltipItem.index] + ' hrs';
+            return label;
+      },
+      beforeLabel: function(tooltipItems, data) {
+        // return data.datasets[0].data[tooltipItems.index] + ' hrs';
+      }
+    }
+  }
+}
+
+var ctx = document.getElementById("myChart").getContext('2d');
+var myChart = new Chart(ctx, {
+  type: 'doughnut',
+  data: data,
+  options: options
+});
+
+document.getElementById("chartjs-legend").innerHTML = myChart.generateLegend();
+
+function legClick(e){
+  var idx = -1;
+  for (var i=0;i<document.getElementsByTagName('span').length;i++){
+    if(document.getElementsByTagName('span')[i]==e.srcElement) {
+      idx = i;
+    }
+  }
+  
+  myChart.getDatasetMeta(0).data[idx].hidden = !myChart.getDatasetMeta(0).data[idx].hidden;
+  myChart.update();
+}
+
+document.getElementsByClassName('chgbutton')[0].onclick = function(evt){
+  evt.preventDefault();
+  myChart.chart.config.data.datasets[0].backgroundColor[0] = '#0B4C5F';
+  myChart.update();
+}
+</script>
+</body>
+
+</html>

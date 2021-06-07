@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="user-scable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, width=device-width, target-densitydpi=medium-dpi">
+<meta name="format-detection" content="telephone=yes, address=no, email=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>gs</title>
+<script type="text/javascript" src="jquery-1.11.1.min.js"></script>
+<script>
+
+  function test()
+  {
+    function DragImg(opt)
+    {
+      var target = opt.target;
+      var pointer = opt.pointer;
+      var img = opt.img;
+      var direction = opt.direction;
+      var _this = this;
+      var iw;
+      var tw;
+      var tWidth;
+      var HORIZONTAL = 'horizontal';
+      var VERTICAL = 'vertical';
+      var chCnt = 0;
+
+      this.move = function(pos)
+      {
+        if(direction==HORIZONTAL){
+          tWidth = target.width();
+          tw = pointer.width();
+          iw = img.width();
+          img.css('width',pos+'%');
+          pointer.css('left',pos+'%')
+        }else{
+          tWidth = target.height();
+          tw = pointer.height();
+          iw = img.height();
+          img.css('height',pos+'%');
+          pointer.css('top',pos+'%')
+        }
+      };
+
+      var dx;
+      var dy;
+
+      this.init = function()
+      {
+        var down = (target.mousedown)?'mousedown':'touchstart';
+        var type =  (target.mousedown)?true:false;
+        var error = tWidth/2;
+
+        var time;
+        var drag = false;
+        pointer.on('mousedown , touchstart',function(evt){
+          chCnt = 0;
+          var e = evt.originalEvent;
+          var offset = target.offset();
+          dx = offset.left;
+          dy = offset.top;
+          time = setTimeout(function() {
+            drag = true;
+          },15);
+        });
+
+        // function moveH(evt){
+        var ttx=0;
+        var tty=0;
+        pointer.on('mousemove , touchmove',function(evt){
+          var W = 2;
+          var tx = 0;
+          var ty = 0;
+
+          if(drag){
+            evt.preventDefault();
+          }else{
+            return
+          }
+
+          var e = evt.originalEvent;
+          if(e.targetTouches)
+          {
+            tx = ((dx+e.targetTouches[0].pageX)/tWidth)*100;
+            ty = ((e.targetTouches[0].pageY-dy)/tWidth)*100;
+          }else{
+            tx = ((dx+e.pageX)/tWidth)*100;
+            ty = ((e.pageY-dy)/tWidth)*100;
+          }
+
+          if(direction==HORIZONTAL){
+            if(0<tx&&tx<100){
+              _this.move(tx);
+            }
+          }else{
+            if(0<ty&&ty<100 ){
+              _this.move(ty);
+            }
+          }
+          chCnt++
+        });
+
+        pointer.on('mouseup , mouseleave , touchend',function(evt){
+          drag = false;
+          clearTimeout(time);
+          // evt.preventDefault();
+          // pointer.off('mousemove , touchmove');
+        });
+      }
+
+    }
+
+
+    // console.log(DragImg.HORIZONTAL);
+    var img1 = new DragImg({
+      target:$('div.horizontal>div.food'),
+      pointer:$('div.horizontal>div.food>div.line'),
+      img:$('div.horizontal>div.food>div.newImg'),
+      direction:'horizontal'
+    });
+    img1.move(0);
+
+    var ani1 = {tx:0};
+    $(ani1).animate({tx:50},{
+      duraing:1000,
+      step:function(now,ef) {
+        img1.move(now);
+      },
+      complete:function()
+      {
+        img1.init();
+      }
+    });
+
+    var img2 = new DragImg({
+      target:$('div.vertical>div.food'),
+      pointer:$('div.vertical>div.food>div.line'),
+      img:$('div.vertical>div.food>div.newImg'),
+      direction:'vertical'
+    });
+    img2.move(0);
+
+    var ani2 = {ty:0};
+    $(ani2).animate({ty:50},{
+      duraing:1000,
+      step:function(now,ef) {
+        img2.move(now);
+      },
+      complete:function()
+      {
+        img2.init();
+      }
+    });
+  }
+  $(window).on('load',function(){
+    test();
+  });
+
+
+
+
+
+</script>
+<style>
+*{padding:0;margin:0}
+img{width:100%;vertical-align:top;}
+.food{position:relative;width:100%;height:100%;overflow: hidden;}
+.sample.horizontal .line{display:block;position:absolute;width:100%;height:100%;left:50%;top:0;transform:translateX(-50%);background:url(gs-t-1.png) no-repeat 50% 0;background-size:auto 100%}
+.sample.vertical .line{display:block;position:absolute;width:100%;height:100%;left:0;top:50%;transform:translateY(-50%);background:url(gs-t-4.png) no-repeat 0 50%;background-size:100% auto}
+.sample .newImg{display:block;position:absolute;width:100%;height:100%;background:url(gs-t-2.png) no-repeat;background-size:cover;}
+.sample{
+  width: 100%;
+}
+body{
+  /*height: 2000px;*/
+  height: 1000px;
+}
+</style>
+</head>
+<body>
+<h2>가로방향</h2>
+<div class="sample horizontal">
+	<div class="food">
+		<div class="newImg"></div>
+		<div class="line"></div>
+		<img src="gs-t-3.png" alt="">
+	</div>
+</div>
+<h2>세로방향</h2>
+<div class="sample vertical">
+	<div class="food">
+		<div class="newImg"></div>
+		<div class="line"></div>
+		<img src="gs-t-3.png" alt="">
+	</div>
+</div>
+</body>
+</html>

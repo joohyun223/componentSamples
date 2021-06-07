@@ -1,0 +1,357 @@
+<html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="user-scable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, width=device-width, target-densitydpi=medium-dpi">
+      <meta name="format-detection" content="telephone=yes, address=no, email=no">
+      <meta name="apple-mobile-web-app-capable" content="yes">
+        <style>
+            .menu{
+              overflow:hidden;
+              padding: 80px 0 0 120px;
+              /*padding: 80px 0 0 0px;*/*/
+              /*margin-left: -40px;*/
+            }
+            .circle>li{
+              position     :absolute;
+            }
+            .circle>li:nth-child(1){
+              width        :58px;
+              margin-top   :35px;
+              margin-left  :173px;
+            }
+            .circle>li:nth-child(2){
+              width        :58px;
+              margin-top   :78px;
+              margin-left  :73px;
+            }
+            .circle>li:nth-child(3){
+              width        :57px;
+              margin-top   :178px;
+              margin-left  :23px;
+            }
+            .circle>li:nth-child(4){
+              width        :77px;
+              margin-top   :275px;
+              margin-left  :57px;
+            }
+            .circle>li:nth-child(5){
+              width        :58px;
+              margin-top   :325px;
+              margin-left  :175px;
+            }
+            .circle>li:nth-child(6){
+              width        :58px;
+              margin-top   :275px;
+              margin-left  :273px;
+            }
+            .circle>li:nth-child(7){
+              width        :58px;
+              margin-top   :178px;
+              margin-left  :313px;
+            }
+            .circle>li:nth-child(8){
+              width        :57px;
+              margin-top   :78px;
+              margin-left  :270px;
+            }
+            .rotationBox{
+              width:401px;
+            }
+
+            .txt{
+              width       :37px;
+              position    :absolute;
+              margin-top  :195px;
+              margin-left :182px;
+              z-index     :1000;
+            }
+
+            img{
+              width: 100%;
+            }
+
+            body,html{
+              margin: 0;
+              padding: 0;
+              overflow-x:none;
+              overflow-y:none;
+            }
+            ul,li{
+              list-style  :none;
+              padding     :0;
+              margin      :0;
+            }
+        </style>
+        <script src="jquery-1.11.1.min.js"></script>
+        <script src="jQueryRotate.js"></script>
+    </head>
+    <body>
+      <div class="menu">
+        <div class="txt"><img src="txt.png"/></div>
+        <div class='rotationBox'>
+            <ul class="circle">
+              <li><a href="#"><img src="m1.png"/></a></li>
+              <li><a href="#"><img src="m2.png"/></a></li>
+              <li><a href="#"><img src="m3.png"/></a></li>
+              <li><a href="#"><img src="m4.png"/></a></li>
+              <li><a href="#"><img src="m5.png"/></a></li>
+              <li><a href="#"><img src="m1.png"/></a></li>
+              <li><a href="#"><img src="m2.png"/></a></li>
+              <li><a href="#"><img src="m3.png"/></a></li>
+            </ul>
+            <img src="bg.png">
+        </div>
+        <div>
+        <script>
+
+        function Jessture( target )
+      	{
+      		var startX = 0;
+      		var startY = 0;
+      		var _this = $(this);
+      		var UP = this.UP = 'jsUp';
+      		var DOWN = this.DOWN = 'jsDown';
+
+      		target.on('touchstart , mousedown' , function(e)
+      		{
+      			if(e.type == 'mousedown'){
+      				// input 필드 체크
+      				if( $(e.target).filter('input').length == 0){
+      					e.preventDefault();
+      				}
+      				startX = e.pageX;
+      				startY = e.pageY;
+      			}else{
+      				startX = e.originalEvent.touches[0].pageX;
+      				startY = e.originalEvent.touches[0].pageY;
+      			}
+      		});
+
+      		target.on( 'touchmove , mousemove' , function(e)
+      		{
+      			var endX = 0;
+      			var endY = 0;
+
+      			if(e.type != 'mousemove')
+      			{
+      				endX = e.originalEvent.touches[0].pageX;
+      				endY = e.originalEvent.touches[0].pageY;
+      			}
+      			if( Math.abs(startX - endX)<Math.abs(startY - endY) )
+      			{
+      				e.preventDefault();
+      			}
+      		});
+
+
+      		target.on('touchend , mouseup' , function(e)
+      		{
+      			var endY = 0;
+      			if(e.type == 'mouseup'){
+      			//if(!e.originalEvent.touches){
+      				endY = Number(e.pageY);
+      				e.preventDefault();
+      			}else{
+      				endY = Number(e.originalEvent.changedTouches[0].pageY);
+      			}
+      			//console.log( startY+'  '+endY +' '+Math.abs(startY - endY));
+      			if( Math.abs(startY - endY) > 70)
+      			{
+      				if(startY < endY)
+      				{
+      					_this.trigger( DOWN );
+      				}else{
+      					_this.trigger( UP );
+      				}
+      			}
+      			startY = 0;
+      		});
+
+      		this.on = function( evt , func)
+      		{
+      			_this.on(evt , func );
+      		};
+      	}
+
+          function mainH()
+          {
+            var x1 , y1 , x2 , y2 = 0;
+            var rotationBox = $('.rotationBox');
+            var body = $('body');
+            // var cu = 0;
+            rotationBox.ing = 0;
+            rotationBox.cu = 0;
+            // rotationBox.cu = rotationBox.ing;
+            rotationBox.on('touchstart',function (evt) {
+              // console.log('xxx-- ',evt.target);
+              var e = evt.originalEvent.targetTouches[0];
+              x1 = e.pageX;
+              y1 = e.pageY;
+              // x1 = $(e.target).offset().left;
+              // y1 = $(e.target).offset().top;
+              // console.log(x1,y1);
+              rotationBox.on('touchmove',move);
+            });
+
+            rotationBox.on('touchend',function (evt) {
+              //console.log('xxx---');
+              var e = evt.originalEvent;
+              rotationBox.off('touchmove',move);
+              rotationBox.cu = rotationBox.ing;
+            });
+
+            // var t = 0;
+            var img = $('.circle>li>a>img');
+            function  move(evt) {
+              var e = evt.originalEvent.targetTouches[0];
+              evt.preventDefault();
+              x2 = e.pageX;
+              y2 = e.pageY;
+              var rad = Math.atan2((y1*x2)-(x1*y2),(x1*x2)+(y1*y2));
+              var ch = rotationBox.cu + rad*(180/Math.PI);
+              // console.log(rotationBox.cu);
+              rotationBox.ing = ch;
+              rotationBox.rotate(ch);
+              img.rotate(-ch);
+            }
+
+
+            var li = $('.circle>li');
+            $.each([-90,-45,0,45,90,135,190,235,280],function(idx,value) {
+              li.eq(idx).data('tr', value);
+              // console.log(li.eq(idx).tr);
+            })
+
+
+            $(document).on('touchstart',function(evt) {
+              evt.preventDefault();
+            });
+
+          // var test ={};
+          // test.n = 0;
+
+
+
+            var rsell = 360/8;
+            // $('.circle>li').each(function(idx)
+            // {
+            //
+            //   // var _cu = cu;
+            //   $(this).on('click',function(evt)
+            //   {
+            //     var li = $(this).closest('li');
+            //     var x = 143;
+            //     var y = 258;
+            //     var ty = $(this).offset().top;
+            //     var tx = $(this).offset().left;
+            //
+            //     console.log(cu);
+            //
+            //     cu += 45;
+            //     rotationBox.rotate({
+            //       animateTo:cu,
+            //       duration:1000
+            //     });
+            //
+            //     img.rotate(-cu);
+            //   });
+            // });
+
+
+            // window.n = 0;
+            $('.circle>li>a').on('click',function(){
+              //  console.log('xxx');
+              var li = $(this).closest('li');
+                //  var x = 143;
+                //  var y = 258;
+                //  var ty = $(this).offset().top;
+                //  var tx = $(this).offset().left;
+
+              //rotationBox.cu+=45;
+              // console.log(rotationBox.cu );
+              //   rotationBox.cu += 45;
+              //    rotationBox.rotate({
+              //      animateTo:rotationBox.cu,
+              //      duration:1000
+              //    });
+              //    img.rotate(-rotationBox.cu);
+            });
+          }
+
+          function mainH2() {
+            var rotationBox = $('.rotationBox');
+            var body = $('body');
+            var img = $('.circle>li>a>img');
+            var ress = new Jessture(rotationBox );
+            var cn = 0;
+            ress.on('jsUp',function()
+            {
+              //console.log('uppp');
+              cn +=45;
+              rotate(cn);
+              // rotationBox.rotate({
+              //     animateTo:cn,
+              //     duration:600
+              //   });
+              //   img.rotate({
+              //     animateTo:-cn,
+              //     duration:600
+              //   });
+            });
+            ress.on('jsDown',function()
+            {
+              // console.log('down');
+              cn -=45;
+              rotate(cn);
+            });
+
+
+            function rotate(_cn)
+            {
+              rotationBox.rotate({
+                  animateTo:_cn,
+                  duration:1000,
+                  easing:$.easing.easeOutExpo
+              });
+              img.rotate({
+                animateTo:-_cn,
+                duration:1000,
+                easing:$.easing.easeOutExpo
+              });
+            }
+
+            $(document).on('touchstart',function(evt) {});
+            $(document).on('touchmove',function(evt){
+              evt.preventDefault();
+            });
+
+            $('.circle>li>a').on('click',function()
+            {
+              var li = $(this).closest('li').offset();
+              var rad = Math.atan2(275-li.top,302-li.left);
+              var degree = rad*(180/Math.PI);
+              var tn = 0;
+
+              if(degree>70&&degree<100){
+                tn = -90
+              }else if(degree>40&&degree<70){
+                tn = -45
+              }else if(degree>1&&degree<20){}
+              else if(degree>-40&&degree<30){
+                tn = 45
+              }else if(degree>-90){
+                tn = 90;
+              }
+              cn+=tn;
+              rotate(cn);
+            });
+
+          }
+
+          $(window).on('load',function(){
+            // mainH();
+            mainH2();
+          });
+        </script>
+    </body>
+</html>
